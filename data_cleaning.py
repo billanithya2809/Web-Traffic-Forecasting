@@ -1,0 +1,34 @@
+# 01_data_cleaning.ipynb
+
+import pandas as pd
+import numpy as np
+
+# 1. Load Data
+file_path = "data/raw/web_traffic.csv"  # adjust your path
+df = pd.read_csv(file_path)
+
+# 2. Quick Look
+print(df.head())
+print(df.info())
+
+# 3. Check for Missing Values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# 4. Check for Duplicates
+print("\nDuplicates:")
+print(df.duplicated().sum())
+
+# 5. Rename Columns (Optional for clarity)
+df.rename(columns={'Hour Index': 'hour_index', 'Sessions': 'sessions'}, inplace=True)
+
+# 6. Convert 'hour_index' to datetime (if it is Unix timestamp)
+df['datetime'] = pd.to_datetime(df['hour_index'], unit='s')
+
+# 7. Sort by datetime
+df.sort_values('datetime', inplace=True)
+
+# 8. Save Cleaned Data
+df.to_csv('data/cleaned/cleaned_web_traffic.csv', index=False)
+
+print("\nData Cleaning Completed. Cleaned file saved.")
